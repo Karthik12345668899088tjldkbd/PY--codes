@@ -1,0 +1,49 @@
+import turtle
+import time
+import random
+
+# Setup screen
+screen = turtle.Screen()
+screen.bgcolor("black")
+screen.title("Hacking Animation")
+screen.setup(width=800, height=600)
+
+# Create turtle for spiral
+spiral = turtle.Turtle()
+spiral.speed(0)
+spiral.hideturtle()
+spiral.color("lime")
+spiral.width(2)
+
+# Create turtle for text
+text_turtle = turtle.Turtle()
+text_turtle.hideturtle()
+text_turtle.color("lime")
+
+# Draw spiral
+def draw_spiral():
+    spiral.penup()
+    spiral.goto(0, 0)
+    spiral.pendown()
+    for i in range(360):
+        spiral.forward(i * 0.5)
+        spiral.right(20)
+
+# Flashing text
+def flashing_text():
+    messages = ["ACCESS GRANTED", "YOU HAVE BEEN HACKED!", "SYSTEM BREACHED"]
+    for _ in range(10):
+        text_turtle.clear()
+        text_turtle.penup()
+        text_turtle.goto(0, 0)
+        text_turtle.write(random.choice(messages), align="center", font=("Courier", 24, "bold"))
+        time.sleep(0.5)
+        text_turtle.clear()
+        time.sleep(0.5)
+
+# Run animation
+draw_spiral()
+flashing_text()
+
+# Keep the window open
+screen.mainloop()
