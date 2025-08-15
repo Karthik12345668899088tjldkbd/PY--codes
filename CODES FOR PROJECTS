@@ -1,0 +1,110 @@
+import turtle as tu
+import math
+
+# Setup screen
+scr = tu.Screen()
+scr.setup(1000, 700)
+scr.bgcolor("#87CEEB")  # Sky blue
+scr.title("Happy Independence Day ")
+
+tu.tracer(0, 0)  # Fast drawing
+
+# Constants
+FLAG_W = 450
+FLAG_H = 300
+STRIPE_H = FLAG_H / 3
+ORIGIN_X = -300
+ORIGIN_Y = 150
+AMP = 15  # Wave amplitude
+FREQ = 2.5
+PHASE_SPEED = 0.15
+
+pen = tu.Turtle()
+pen.hideturtle()
+pen.pensize(2)
+
+# Draw flag pole (static)
+def draw_pole():
+    pen.penup()
+    pen.goto(ORIGIN_X - 30, ORIGIN_Y + 40)
+    pen.color("#5b3714", "#8B5A2B")
+    pen.begin_fill()
+    for _ in range(2):
+        pen.forward(25)
+        pen.right(90)
+        pen.forward(FLAG_H + 200)
+        pen.right(90)
+    pen.end_fill()
+
+# Draw Ashoka Chakra
+def draw_chakra(cx, cy, r, phase):
+    pen.pencolor("#000080")
+    steps = 72
+    pen.penup()
+    for i in range(steps + 1):
+        angle = 2 * math.pi * i / steps
+        x = cx + r * math.cos(angle)
+        y = cy + r * math.sin(angle)
+        dx = AMP * math.sin(FREQ * (y - ORIGIN_Y) / STRIPE_H + phase)
+        if i == 0:
+            pen.goto(x + dx, y)
+            pen.pendown()
+        else:
+            pen.goto(x + dx, y)
+    pen.penup()
+    # 24 spokes
+    for i in range(24):
+        angle = 2 * math.pi * i / 24
+        x1 = cx + r * math.cos(angle)
+        y1 = cy + r * math.sin(angle)
+        dx1 = AMP * math.sin(FREQ * (y1 - ORIGIN_Y) / STRIPE_H + phase)
+        pen.goto(cx, cy)
+        pen.pendown()
+        pen.goto(x1 + dx1, y1)
+        pen.penup()
+
+# Draw flag with wave
+def draw_flag(phase):
+    pen.clear()
+    draw_pole()
+    for stripe, color in enumerate(("#FF9933", "white", "#138808")):
+        y_top = ORIGIN_Y - stripe * STRIPE_H
+        y_bottom = y_top - STRIPE_H
+        pen.fillcolor(color)
+        pen.begin_fill()
+        for y in [y_top, y_bottom]:
+            for x in range(0, FLAG_W + 1, 5):
+                yy = y
+                xx = ORIGIN_X + x + AMP * math.sin(FREQ * (yy - ORIGIN_Y) / STRIPE_H + phase)
+                pen.goto(xx, yy)
+                pen.pendown()
+        pen.end_fill()
+        pen.penup()
+
+    # Draw Ashoka Chakra in middle white stripe
+    cx = ORIGIN_X + FLAG_W // 2
+    cy = ORIGIN_Y - STRIPE_H * 1.5
+    draw_chakra(cx, cy, 30, phase)
+
+    # Greeting
+    pen.goto(0, -250)
+    pen.color("#FF9933")
+    pen.write("Happy ", align="center", font=("Arial", 28, "bold"))
+    pen.goto(0, -290)
+    pen.color("white")
+    pen.write("Independence", align="center", font=("Arial", 28, "bold"))
+    pen.goto(0, -330)
+    pen.color("#138808")
+    pen.write("Day 🇮🇳", align="center", font=("Arial", 28, "bold"))
+
+# Animation loop
+phase = 0
+def animate():
+    global phase
+    draw_flag(phase)
+    phase += PHASE_SPEED
+    tu.update()
+    scr.ontimer(animate, 50)
+
+animate()
+tu.done()
