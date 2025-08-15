@@ -1,0 +1,63 @@
+import turtle
+import random
+import time
+
+# Set up the screen
+screen = turtle.Screen()
+screen.bgcolor("black")
+screen.title("Hacking in Progress...")
+
+# Create a turtle for drawing
+hacker = turtle.Turtle()
+hacker.hideturtle()
+hacker.speed(0)
+hacker.color("green")
+
+# Function to display random "hacking" text
+def display_text():
+    hacker.penup()
+    hacker.goto(random.randint(-300, 300), random.randint(-300, 300))
+    hacker.write(
+        random.choice([
+            "Accessing mainframe...",
+            "Decrypting passwords...",
+            "Bypassing firewall...",
+            "Uploading virus...",
+            "System breach detected!",
+            "Data extraction in progress...",
+            "Initializing backdoor...",
+            "Hacking NASA...",
+            "Compiling code...",
+            "Connection established!"
+        ]),
+        font=("Courier", 12, "bold"),
+        align="center"
+    )
+
+# Function to draw random shapes
+def draw_shapes():
+    hacker.penup()
+    hacker.goto(random.randint(-300, 300), random.randint(-300, 300))
+    hacker.pendown()
+    hacker.pencolor("green")
+    for _ in range(random.randint(3, 8)):
+        hacker.forward(random.randint(20, 100))
+        hacker.left(random.randint(30, 120))
+
+# Main loop for the prank
+start_time = time.time()
+while time.time() - start_time < 15:  # Run for 15 seconds
+    if random.choice([True, False]):
+        display_text()
+    else:
+        draw_shapes()
+
+# End message
+hacker.clear()
+hacker.penup()
+hacker.goto(0, 0)
+hacker.color("red")
+hacker.write("HACKING COMPLETE!", font=("Courier", 24, "bold"), align="center")
+
+# Keep the window open
+screen.mainloop()
