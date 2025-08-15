@@ -1,0 +1,52 @@
+import turtle
+import random
+import time
+
+# Set up the screen
+screen = turtle.Screen()
+screen.bgcolor("black")
+screen.title("Hacking in Progress...")
+
+# Create a turtle for drawing
+hacker_turtle = turtle.Turtle()
+hacker_turtle.hideturtle()
+hacker_turtle.speed(0)
+hacker_turtle.color("green")
+
+# Function to display random "hacking" text
+def display_text():
+    hacker_turtle.penup()
+    hacker_turtle.goto(random.randint(-300, 300), random.randint(-300, 300))
+    hacker_turtle.write(
+        random.choice(["ACCESS GRANTED", "ENCRYPTING...", "DATA BREACH", "LOADING..."]),
+        font=("Courier", 12, "bold"),
+        align="center",
+    )
+
+# Function to draw random shapes
+def draw_shapes():
+    hacker_turtle.penup()
+    hacker_turtle.goto(random.randint(-300, 300), random.randint(-300, 300))
+    hacker_turtle.pendown()
+    hacker_turtle.begin_fill()
+    for _ in range(random.randint(3, 6)):  # Random polygons
+        hacker_turtle.forward(random.randint(20, 100))
+        hacker_turtle.left(360 / random.randint(3, 6))
+    hacker_turtle.end_fill()
+
+# Main loop for the prank
+start_time = time.time()
+while time.time() - start_time < 10:  # Run for 10 seconds
+    if random.choice([True, False]):
+        display_text()
+    else:
+        draw_shapes()
+
+# End message
+hacker_turtle.penup()
+hacker_turtle.goto(0, 0)
+hacker_turtle.color("red")
+hacker_turtle.write("HACK COMPLETE!", font=("Courier", 24, "bold"), align="center")
+
+# Keep the window open
+screen.mainloop()
