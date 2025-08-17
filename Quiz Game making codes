@@ -1,0 +1,26 @@
+questions = {
+    "What is the capital of France?": "a",
+    "Which programming language is known for its simplicity?": "b",
+    "What is 5 + 7?": "c"
+}
+
+options = {
+    "What is the capital of France?": "a) Paris\nb) London\nc) Berlin",
+    "Which programming language is known for its simplicity?": "a) Java\nb) Python\nc) C++",
+    "What is 5 + 7?": "a) 10\nb) 11\nc) 12"
+}
+
+score = 0
+
+print("Welcome to the Quiz Game!")
+for question, correct_answer in questions.items():
+    print("\n" + question)
+    print(options[question])
+    answer = input("Your answer (a/b/c): ").lower()
+    if answer == correct_answer:
+        print("Correct!")
+        score += 1
+    else:
+        print("Wrong!")
+
+print(f"\nYour final score is: {score}/{len(questions)}")
