@@ -1,0 +1,92 @@
+import turtle
+import random
+
+# Screen setup
+screen = turtle.Screen()
+screen.title("Flappy Bird")
+screen.bgcolor("skyblue")
+screen.setup(width=800, height=600)
+screen.tracer(0)
+
+# Bird setup
+bird = turtle.Turtle()
+bird.shape("circle")
+bird.color("yellow")
+bird.penup()
+bird.goto(-200, 0)
+bird.dy = 0  # Vertical speed
+
+# Gravity and jump
+gravity = -0.5
+jump_strength = 10
+
+# Pipe setup
+pipe_width = 40
+pipe_gap = 150
+pipes = []
+
+def create_pipe():
+    top_pipe = turtle.Turtle()
+    top_pipe.shape("square")
+    top_pipe.color("green")
+    top_pipe.shapesize(stretch_wid=15, stretch_len=pipe_width / 20)
+    top_pipe.penup()
+    top_pipe.goto(400, random.randint(100, 300) + pipe_gap)
+
+    bottom_pipe = turtle.Turtle()
+    bottom_pipe.shape("square")
+    bottom_pipe.color("green")
+    bottom_pipe.shapesize(stretch_wid=15, stretch_len=pipe_width / 20)
+    bottom_pipe.penup()
+    bottom_pipe.goto(400, top_pipe.ycor() - pipe_gap - 300)
+
+    pipes.append((top_pipe, bottom_pipe))
+
+# Bird jump function
+def jump():
+    bird.dy = jump_strength
+
+# Keyboard binding
+screen.listen()
+screen.onkeypress(jump, "space")
+
+# Game loop
+def game_loop():
+    global pipes
+
+    # Bird movement
+    bird.dy += gravity
+    bird.sety(bird.ycor() + bird.dy)
+
+    # Pipe movement
+    for top_pipe, bottom_pipe in pipes:
+        top_pipe.setx(top_pipe.xcor() - 3)
+        bottom_pipe.setx(bottom_pipe.xcor() - 3)
+
+    # Remove pipes that go off-screen
+    pipes = [pipe for pipe in pipes if pipe[0].xcor() > -400]
+
+    # Add new pipes
+    if len(pipes) == 0 or pipes[-1][0].xcor() < 200:
+        create_pipe()
+
+    # Collision detection
+    for top_pipe, bottom_pipe in pipes:
+        if bird.distance(top_pipe) < 20 or bird.distance(bottom_pipe) < 20:
+            print("Game Over!")
+            return
+
+    # Check if bird hits the ground or flies too high
+    if bird.ycor() < -300 or bird.ycor() > 300:
+        print("Game Over!")
+        return
+
+    # Update screen
+    screen.update()
+    screen.ontimer(game_loop, 20)
+
+# Start the game
+create_pipe()
+game_loop()
+screen.mainloop()
+
